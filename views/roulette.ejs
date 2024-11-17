@@ -1,0 +1,29 @@
+<!-- views/index.ejs -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ロシアンルーレットゲーム</title>
+</head>
+<body>
+    <h1>ロシアンルーレットゲーム</h1>
+    
+    <form action="/play" method="GET">
+        <button name="choice" value="1">1</button>
+        <button name="choice" value="2">2</button>
+        <button name="choice" value="3">3</button>
+        <button name="choice" value="4">4</button>
+        <button name="choice" value="5">5</button>
+        <button name="choice" value="6">6</button>
+    </form>
+
+    <h2 id="result"><%= message %></h2>
+
+    <% if (playerChoice !== undefined && cpuChoice !== undefined) { %>
+        <p>プレイヤーは位置 <%= playerChoice %> を選びました。</p>
+        <p>CPUは位置 <%= cpuChoice %> を選びました。</p>
+        <p>銃弾の位置は <%= bulletPosition %> です。</p>
+    <% } %>
+</body>
+</html>

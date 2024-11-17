@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ロシアンルーレットゲーム</title>
+    <script>
+        // ゲームの初期設定
+        const totalChambers = 6;
+        let bulletPosition;
+        let playerChoice;
+        let cpuChoice;
+        let gameResult = '';
+        let gameStarted = false;
+        let selectedChoices = [];  // 選択された番号を記録する配列
+
+        // ゲーム開始
+        function startGame() {
+            // 銃弾の位置をランダムに決める（1〜6）
+            bulletPosition = Math.floor(Math.random() * totalChambers) + 1;
+            gameResult = '';
+            gameStarted = true;
+            selectedChoices = []; // 前回の選択をリセット
+
+            // プレイヤーとCPUの選択肢をリセット
+            playerChoice = null;
+            cpuChoice = null;
+
+            // プレイヤーの選択肢ボタンを表示
+            document.getElementById('result').textContent = 'ゲームを開始しました。次の選択肢から選んでください。';
+            document.getElementById('playerChoices').style.display = 'block';
+            document.getElementById('cpuChoice').textContent = 'CPUはまだ選んでいません。';
+
+            // ボタンを再度有効化して表示
+            const buttons = document.querySelectorAll('.choice-button');
+            buttons.forEach(button => {
+                button.disabled = false;  // ボタンを有効化
+                button.style.display = 'inline-block';  // ボタンを表示
+            });
+        }
+
+        // プレイヤーの選択
+        function playerSelect(choice) {
+            if (!gameStarted || selectedChoices.includes(choice)) return;  // ゲームが開始されていない、または既に選択された場合は何もしない
+
+            playerChoice = choice;
+            selectedChoices.push(choice);  // 選択された番号を記録
+            document.getElementById('playerChoices').style.display = 'none';
+
+            // プレイヤーが選んだボタンを無効化
+            disableChoiceButton(choice);
+
+            // CPUの選択をランダムに決める
+            cpuSelect();
+        }
+
+        // CPUの選択
+        function cpuSelect() {
+            // プレイヤーとCPUが選んだ番号を除外した残りの選択肢をリストアップ
+            let availableChoices = [];
+            for (let i = 1; i <= totalChambers; i++) {
+                if (!selectedChoices.includes(i)) {
+                    availableChoices.push(i);
+                }
+            }
+
+            // CPUが選べる選択肢の中からランダムに選ぶ
+            cpuChoice = availableChoices[Math.floor(Math.random() * availableChoices.length)];
+            selectedChoices.push(cpuChoice); // CPUが選んだ番号を追加
+            document.getElementById('cpuChoice').textContent = `CPUは ${cpuChoice} を選びました。`;
+
+            // CPUが選んだボタンを無効化
+            disableChoiceButton(cpuChoice);
+
+            // 結果を判定
+            checkGameResult();
+        }
+
+        // 選択肢のボタンを無効化
+        function disableChoiceButton(choice) {
+            const button = document.getElementById('choice' + choice);
+            button.disabled = true;
+            button.style.display = 'none';  // ボタンを非表示
+        }
+
+        // 結果を判定
+        function checkGameResult() {
+            if (playerChoice === bulletPosition) {
+                gameResult = '実弾を引き当てました！あなたの負けです。';
+            } else if (cpuChoice === bulletPosition) {
+                gameResult = 'CPUが銃弾を引きました！あなたの勝ちです！';
+            } else {
+                gameResult = '両者とも実弾を回避しました。次の選択をお願いします。';
+            }
+            document.getElementById('result').textContent = gameResult;
+
+            // ゲーム終了後、選択肢を再表示するためのリセット
+            setTimeout(() => {
+                document.getElementById('playerChoices').style.display = 'block';
+                selectedChoices.forEach(choice => {
+                    // 選ばれたボタンを再表示
+                    const button = document.getElementById('choice' + choice);
+                    button.style.display = 'inline-block';
+                });
+            }, 2000);  // 2秒後に再表示
+        }
+    </script>
+</head>
+<body>
+    <h1>ロシアンルーレットゲーム</h1>
+    <button onclick="startGame()">ゲーム開始</button>
+
+    <div id="playerChoices" style="display:none;">
+        <h2>プレイヤーの選択</h2>
+        <button id="choice1" class="choice-button" onclick="playerSelect(1)">1</button>
+        <button id="choice2" class="choice-button" onclick="playerSelect(2)">2</button>
+        <button id="choice3" class="choice-button" onclick="playerSelect(3)">3</button>
+        <button id="choice4" class="choice-button" onclick="playerSelect(4)">4</button>
+        <button id="choice5" class="choice-button" onclick="playerSelect(5)">5</button>
+        <button id="choice6" class="choice-button" onclick="playerSelect(6)">6</button>
+    </div>
+
+    <h2 id="cpuChoice">CPUはまだ選んでいません。</h2>
+    <p id="result"></p>
+</body>
+</html>
+
+
