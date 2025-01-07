@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>掲示板</title>
+    <script src="./bbs2.js" defer></script>
+    <link rel="stylesheet" href="./bbs.css">
+</head>
+<body>
+    <div id="bbs"></div>
+    <div>
+        <label for="name">名前：</label>
+        <input type="text" id="name">
+        <label for="name">メッセージ：</label>
+        <input type="text" id="message">
+        <button type="button" id="post">送信</button>
+    </div>
+    <!-- お気に入り一覧ボタン -->
+<button id="showFavorites">お気に入り一覧</button>
+
+<!-- 投稿確認モーダル -->
+<div id="confirmation-modal" style="display: none;">
+    <p>本当に投稿しますか？</p>
+    <button id="confirm-yes">はい</button>
+    <button id="confirm-no">いいえ</button>
+</div>
+
+    <div id="check">
+        <button type="button" id="check">投稿チェック</button>
+    </div>
+</body>
+</html>
